@@ -1,0 +1,42 @@
+添加源列表并不难就是了，用vim进etc/apt.source.list添加也好，使用命令sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'也行。
+如果出现了部分安装失败的问题，在原安装命令后面加上--fix-missing运行，可以校验是否安装成功，并补充缺乏部分。
+
+
+It's convenient if the ROS environment variables are automatically added to your bash session every time a new shell is launched:
+
+echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+If you have more than one ROS distribution installed, ~/.bashrc must only source the setup.bash for the version you are currently using.
+
+If you just want to change the environment of your current shell, instead of the above you can type:
+
+source /opt/ros/kinetic/setup.bash
+以上是一些ros的环境设置命令，我准备设置一下当前终端。而不是每次都自动开启
+
+
+package
+ros软件的基本组织形式，catkin编译的基本单元，一个package可以包含多个可执行文件
+下层是CMakeLists.txt和package.xml文件
+cmakelists规定了catkin编译的规则，例如源文件，依赖项，目标文件
+最好读下cmake实践这本书，当然，ros有自动生成的模板文件，对着改好了。
+package.xml定义了package的属性，例如包名，版本号，作者、依赖等
+代码文件分为两种，脚本（shell、python）以及c++文件（头文件和源文件）
+一般会在package里面建立一个scripts以存放py和shell文件
+建立个include放.h，建立一个src，里面放.cpp，有时也放一些能够被import的python
+module
+如果想，package内还可以放一些自定义的通信格式，消息（msg），服务（src）
+以及动作（action）这些都是自定义的，
+
+自定义一个服务，建立srv文件夹，在package内，然后在srv内放一个.srv服务文件。
+
+package下可以放launch和配置文件，launch文件是为了同时启动多个项目的。
+config格式很多
+一些包管理指令，见图片笔记。
+从github上clone包的指令，git clone https://github.com/DroidAITech/ROS-Academy-for-Beginners.git
+可能会缺少一些依赖项
+可以使用rosdep install --from-paths src --ignore-srcro=kinetic -y命令来补全安装，之所以知道缺少些什么，是因为在每个package里的package。xml文件里有列表
+
+
+遇见了什么锁定，被占用的问题，可以通过sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock这两条命令进行解锁。
